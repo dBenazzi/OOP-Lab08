@@ -1,9 +1,16 @@
 package it.unibo.oop.lab.mvc;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 /**
  * A very simple program using a graphical interface.
@@ -12,6 +19,7 @@ import javax.swing.JFrame;
 public final class SimpleGUI {
 
     private final JFrame frame = new JFrame();
+    private final Controller control = new ControllerImpl();
 
     /*
      * Once the Controller is done, implement this class in such a way that:
@@ -38,6 +46,48 @@ public final class SimpleGUI {
      * builds a new {@link SimpleGUI}.
      */
     public SimpleGUI() {
+        /*
+         * gui init
+         */
+        final JPanel mainPanel = new JPanel(new BorderLayout());
+        final JTextField textField = new JTextField("insert a string");
+        final JTextArea textArea = new JTextArea();
+        final JPanel innerPanel = new JPanel(new BorderLayout());
+        final JButton print = new JButton("print");
+        final JButton history = new JButton("show history");
+
+        mainPanel.add(textField, BorderLayout.NORTH);
+        mainPanel.add(textArea, BorderLayout.CENTER);
+        innerPanel.add(print, BorderLayout.EAST);
+        innerPanel.add(history, BorderLayout.WEST);
+        mainPanel.add(innerPanel, BorderLayout.SOUTH);
+
+        textArea.setEditable(false);
+        textArea.setAlignmentX(0.0f); 
+        textArea.setAlignmentY(0.0f); 
+
+        frame.add(mainPanel);
+
+        //action listeners
+        print.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                // TODO Auto-generated method stub
+                if (!textField.getText().isEmpty()) {
+                    SimpleGUI.this.control.setNextString(textField.getText());
+                    SimpleGUI.this.control.printString();
+                }
+            }
+        });
+ 
+        history.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                textArea.setText(SimpleGUI.this.control.getStringList().toString());
+            }
+        });
 
         /*
          * Make the frame half the resolution of the screen. This very method is
@@ -60,6 +110,16 @@ public final class SimpleGUI {
          * on screen. Results may vary, but it is generally the best choice.
          */
         frame.setLocationByPlatform(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    public void display() {
+        frame.setVisible(true);
+    }
+
+    public static void main(final String[] s) {
+        final SimpleGUI gui = new SimpleGUI();
+        gui.display();
     }
 
 }
