@@ -25,4 +25,37 @@ public interface Controller {
      * 
      */
 
+    /**
+     * set the next string to be printed and/or stored.
+     * 
+     * @param s
+     *          the string to be stored
+     * @throws IllegalArgumentException
+     *          if the s value is null an {@link IllegalArgumentException} is thrown
+     */
+    void setNextString(final String s) throws IllegalArgumentException;
+
+    /**
+     * return the last set string.
+     * 
+     * @return the last set String
+     */
+    String getNextString();
+
+    /**
+     * return the list of all of the set strings.
+     * 
+     * @return a list of the set strings
+     */
+    java.util.List<String> getStringList();
+
+    /**
+     * the currently set string is printed on the STDout.
+     * 
+     * @throws IllegalStateException
+     *      if the currently set string is null an {@link IllegalStateException} is thrown;
+     *      (e.g. if the first string hasn't been set yet)
+     */
+    void printString() throws IllegalStateException;
+ 
 }
